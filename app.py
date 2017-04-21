@@ -1,10 +1,45 @@
 from pymongo import MongoClient
 import datetime
+import httplib
+import pprint
 import re
 import subprocess
 import sys
 
 client = MongoClient('localhost', 27017)
+
+def get_results():
+    db = client.database
+    network_results = db.network_results_collection.find()
+    return network_results
+
+def erase_results():
+    try:
+        db = client.database
+        db.network_results_collection.remove()
+        return True
+    except:
+        return False
+
+def print_results():
+    try:
+        db = client.database
+        network_results = db.network_results_collection
+        for result in network_results.find():
+            pprint.pprint(result)
+        return True
+    except:
+        return False
+
+def connected_to_internet():
+    conn = httplib.HTTPConnection("www.google.com", timeout=5)
+    try:
+        conn.request("HEAD", "/")
+        conn.close()
+        return True
+    except:
+        conn.close()
+        return False
 
 def latency_test():
     n = "20"
@@ -19,30 +54,33 @@ def bandwidth_test():
     l = [None] * 3
     l[0] = r[1].split(":")[1][1:]
     l[1] = r[2].split(":")[1][1:]
-    l[2] = r[0].split(":")[1][1:]
     return l
 
 def main():
     n = int(sys.argv[1])
-    max_down = max_up = avg_latency = 0
-    for index in range(n):
-        print "Running test number", index+1, "..."
-        run = bandwidth_test()
-        nums = re.findall(r'([\d.]+)', str(run))
-        if (float(nums[0]) > max_down):
-            max_down = float(nums[0])
-        if (float(nums[1]) > max_up):
-            max_up = float(nums[1])
-        avg_latency += float(latency_test())
-    avg_latency /= n
-    print "Download: ", str(max_down), " Upload: ", str(max_up), " Latency: ", str(avg_latency)
-    # TODO: Build JSON containing the date and results
-    # TODO: Store JSON in Database
-    # db = client.database
-    # hosts = db.host_collection
-    # t = hosts.update_one(
-    #                     {"email": email},
-    #                     {"$addToSet": {"hosts": {"host_name": host_name, "host_nickname": host_nickname, "notified": False}}})
+    max_down = max_up = avg_latency = 0.0
+    t = datetime.datetime.now()
+    t = t.strftime("%Y-%m-%d %H:%M")
+    b = connected_to_internet()
+    if (b):
+        for index in range(n):
+            print "Running test number", index+1, "..."
+            run = bandwidth_test()
+            nums = re.findall(r'([\d.]+)', str(run))
+            if (float(nums[0]) > max_down):
+                max_down = float(nums[0])
+            if (float(nums[1]) > max_up):
+                max_up = float(nums[1])
+            avg_latency += float(latency_test())
+        avg_latency /= n
+        results = {"time": t, "download": max_down, "upload": max_up, "latency": avg_latency}
+    else:
+        results = {"time": t, "download": -1, "upload": -1, "latency": -1}
+    db = client.database
+    network_results = db.network_results_collection
+    t = network_results.insert_one(results)
 
 if __name__ == "__main__":
+    erase_results()
     main()
+    print_results()
