@@ -1,4 +1,4 @@
-from pymongo import MongoClient
+from flask import Flask, flash, request, json, redirect, Blueprint
 import datetime
 import httplib
 import pprint
@@ -6,7 +6,9 @@ import re
 import subprocess
 import sys
 
-client = MongoClient('localhost', 27017)
+from app import client
+
+netspeed = Blueprint('netspeed', __name__)
 
 def get_results():
     db = client.database
@@ -56,8 +58,7 @@ def bandwidth_test():
     l[1] = r[2].split(":")[1][1:]
     return l
 
-def main():
-    n = int(sys.argv[1])
+def run_test(n):
     max_down = max_up = avg_latency = 0.0
     t = datetime.datetime.now()
     t = t.strftime("%Y-%m-%d %H:%M")
@@ -82,5 +83,5 @@ def main():
 
 if __name__ == "__main__":
     erase_results()
-    main()
+    run_test(1)
     print_results()
