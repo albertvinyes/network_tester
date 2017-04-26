@@ -53,6 +53,4 @@ def run_test(n):
         results = {"time": t, "download": max_down, "upload": max_up, "latency": avg_latency}
     else:
         results = {"time": t, "download": -1, "upload": -1, "latency": -1}
-    db = client.database
-    network_results = db.network_results_collection
-    t = network_results.insert_one(results)
+    return results
