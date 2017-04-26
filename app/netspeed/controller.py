@@ -1,4 +1,4 @@
-from flask import Flask, flash, request, json, redirect, Blueprint
+from flask import Blueprint
 import datetime
 import httplib
 import pprint
@@ -6,32 +6,8 @@ import re
 import subprocess
 import sys
 
-from app import client
-
 netspeed = Blueprint('netspeed', __name__)
 
-def get_results():
-    db = client.database
-    network_results = db.network_results_collection.find()
-    return network_results
-
-def erase_results():
-    try:
-        db = client.database
-        db.network_results_collection.remove()
-        return True
-    except:
-        return False
-
-def print_results():
-    try:
-        db = client.database
-        network_results = db.network_results_collection
-        for result in network_results.find():
-            pprint.pprint(result)
-        return True
-    except:
-        return False
 
 def connected_to_internet():
     conn = httplib.HTTPConnection("www.google.com", timeout=5)
@@ -80,8 +56,3 @@ def run_test(n):
     db = client.database
     network_results = db.network_results_collection
     t = network_results.insert_one(results)
-
-if __name__ == "__main__":
-    erase_results()
-    run_test(1)
-    print_results()
