@@ -24,6 +24,15 @@ def erase_results():
     except:
         return False
 
+def store_results(res):
+    try:
+        db = client.database
+        network_results = db.network_results_collection
+        t = network_results.insert_one(res)
+        return True
+    except:
+        return False
+
 def print_results():
     try:
         db = client.database
