@@ -1,6 +1,6 @@
 from flask import Flask, flash, request, json, redirect, Blueprint
 from pymongo import MongoClient
-from bson.json_util import dumps
+from bson.json_util import loads, dumps
 import datetime
 import httplib
 import pprint
@@ -34,7 +34,7 @@ def store_results(res):
         t = network_results.insert_one(loads(res))
         return True
     except:
-        return False
+        raise
 
 
 def print_results():
