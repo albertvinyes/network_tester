@@ -24,17 +24,15 @@ def latency_test():
     n = "20"
     host = "8.8.8.8"
     ps = subprocess.Popen(('ping', '-i', '0.2','-c', n, host), stdout=subprocess.PIPE)
-    output = subprocess.check_output(("awk", "-F", "/", "END {print $5}"), stdin=ps.stdout)
+    output = subprocess.check_output(("awk", "-F", "/", "END {print $5}"), stdin=ps.stdout)[:-1]
     ps.stdout.close()
     return output
 
 def bandwidth_test():
     st = pyspeedtest.SpeedTest()
     l = [None] * 2
-    d = st.download()
-    u = st.upload()
-    l[0] = d
-    l[1] = u
+    l[0] = st.download()
+    l[1] = st.upload()
     return l
 
 @netspeed.route("/run_test", methods=['GET'])
