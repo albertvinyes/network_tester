@@ -1,4 +1,5 @@
 from flask import Blueprint
+from bson.json_util import dumps
 import pyspeedtest
 import datetime
 import httplib
@@ -39,16 +40,13 @@ def bandwidth_test():
 @netspeed.route("/run_test", methods=['GET'])
 def run_test():
     # TODO: keep just 4 decimals
-    max_down = max_up = avg_latency = 0.0
     t = datetime.datetime.now()
     t = t.strftime("%Y-%m-%d %H:%M")
     b = connected_to_internet()
     if (b):
         nums = bandwidth_test()
-        max_down = float(nums[0])
-        max_up = float(nums[1])
-        latency = float(latency_test())
-        results = {"time": t, "download": max_down, "upload": max_up, "latency": latency}
+        latency = latency_test()
+        results = {"time": t, "download": nums[0], "upload": nums[1], "latency": latency}
     else:
         results = {"time": t, "download": -1, "upload": -1, "latency": -1}
-    return results
+    return dumps(results)
