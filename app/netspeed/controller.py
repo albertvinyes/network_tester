@@ -44,16 +44,11 @@ def run_test():
     t = t.strftime("%Y-%m-%d %H:%M")
     b = connected_to_internet()
     if (b):
-        for index in range(n):
-            print "Running test number", index+1, "..."
-            nums = bandwidth_test()
-            if (float(nums[0]) > max_down):
-                max_down = float(nums[0])
-            if (float(nums[1]) > max_up):
-                max_up = float(nums[1])
-            avg_latency += float(latency_test())
-        avg_latency /= n
-        results = {"time": t, "download": max_down, "upload": max_up, "latency": avg_latency}
+        nums = bandwidth_test()
+        max_down = float(nums[0])
+        max_up = float(nums[1])
+        latency = float(latency_test())
+        results = {"time": t, "download": max_down, "upload": max_up, "latency": latency}
     else:
         results = {"time": t, "download": -1, "upload": -1, "latency": -1}
     return results
