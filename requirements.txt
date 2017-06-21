@@ -8,5 +8,7 @@ MarkupSafe==1.0
 packaging==16.8
 pymongo==3.4.0
 pyparsing==2.2.0
+pyspeedtest==1.2.7
+schedule==0.4.3
 six==1.10.0
 Werkzeug==0.12.1
