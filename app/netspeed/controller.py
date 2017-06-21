@@ -1,4 +1,5 @@
 from flask import Blueprint
+import pyspeedtest
 import datetime
 import httplib
 import pprint
@@ -7,7 +8,6 @@ import subprocess
 import sys
 
 netspeed = Blueprint('netspeed', __name__)
-
 
 def connected_to_internet():
     conn = httplib.HTTPConnection("www.google.com", timeout=5)
@@ -28,13 +28,17 @@ def latency_test():
     return output
 
 def bandwidth_test():
-    r = subprocess.check_output(["speedtest-cli", "--simple"]).split("\n")
-    l = [None] * 3
-    l[0] = r[1].split(":")[1][1:]
-    l[1] = r[2].split(":")[1][1:]
+    st = pyspeedtest.SpeedTest()
+    l = [None] * 2
+    d = st.download()
+    u = st.upload()
+    l[0] = d
+    l[1] = u
     return l
 
-def run_test(n):
+@netspeed.route("/run_test", methods=['GET'])
+def run_test():
+    # TODO: keep just 4 decimals
     max_down = max_up = avg_latency = 0.0
     t = datetime.datetime.now()
     t = t.strftime("%Y-%m-%d %H:%M")
@@ -42,8 +46,7 @@ def run_test(n):
     if (b):
         for index in range(n):
             print "Running test number", index+1, "..."
-            run = bandwidth_test()
-            nums = re.findall(r'([\d.]+)', str(run))
+            nums = bandwidth_test()
             if (float(nums[0]) > max_down):
                 max_down = float(nums[0])
             if (float(nums[1]) > max_up):

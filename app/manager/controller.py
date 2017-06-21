@@ -1,5 +1,6 @@
 from flask import Flask, flash, request, json, redirect, Blueprint
 from pymongo import MongoClient
+from bson.json_util import dumps
 import datetime
 import httplib
 import pprint
@@ -11,10 +12,11 @@ client = MongoClient('localhost', 27017)
 
 manager = Blueprint('manager', __name__)
 
+@manager.route("/get_all_results", methods=['GET'])
 def get_results():
     db = client.database
     network_results = db.network_results_collection.find()
-    return network_results
+    return dumps(network_results)
 
 def erase_results():
     try:
