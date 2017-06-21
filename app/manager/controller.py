@@ -18,22 +18,24 @@ def get_results():
     network_results = db.network_results_collection.find()
     return dumps(network_results)
 
+@manager.route("/delete_results", methods=['DELETE'])
 def erase_results():
     try:
         db = client.database
         db.network_results_collection.remove()
-        return True
+        return("Results removed", 200)
     except:
-        return False
+        return("Error removing results", 400)
 
 def store_results(res):
     try:
         db = client.database
         network_results = db.network_results_collection
-        t = network_results.insert_one(res)
+        t = network_results.insert_one(loads(res))
         return True
     except:
         return False
+
 
 def print_results():
     try:
