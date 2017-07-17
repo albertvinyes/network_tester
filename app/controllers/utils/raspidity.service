@@ -1,0 +1,7 @@
+raspidity.service
+[Unit]
+Description=Netwwork analysis scheduler
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python /home/albert/git/network-tester/scheduler.py

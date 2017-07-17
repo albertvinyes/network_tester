@@ -1,5 +1,5 @@
-from manager import controller as manager
-from netspeed import controller as netspeed
+from controllers.manager import controller as manager
+from controllers.netspeed import controller as netspeed
 
 def run_test():
     results = netspeed.run_test()
