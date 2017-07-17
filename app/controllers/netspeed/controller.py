@@ -2,7 +2,7 @@ from flask import Blueprint
 from bson.json_util import dumps
 import pyspeedtest
 import datetime
-import httplib
+import http.client
 import pprint
 import re
 import subprocess
@@ -11,7 +11,7 @@ import sys
 netspeed = Blueprint('netspeed', __name__)
 
 def connected_to_internet():
-    conn = httplib.HTTPConnection("www.google.com", timeout=5)
+    conn = http.client.HTTPConnection("www.google.com", timeout=5)
     try:
         conn.request("HEAD", "/")
         conn.close()
@@ -26,7 +26,7 @@ def latency_test():
     ps = subprocess.Popen(('ping', '-i', '0.2','-c', n, host), stdout=subprocess.PIPE)
     output = subprocess.check_output(("awk", "-F", "/", "END {print $5}"), stdin=ps.stdout)[:-1]
     ps.stdout.close()
-    return output
+    return output.decode("utf-8") 
 
 def bandwidth_test():
     st = pyspeedtest.SpeedTest()

@@ -3,7 +3,6 @@ from pymongo import MongoClient
 from bson.json_util import loads, dumps
 import json
 import datetime
-import httplib
 import pprint
 import re
 import subprocess
