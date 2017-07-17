@@ -42,11 +42,6 @@ def get_desired_qos():
         qos = db.qos_collection.find_one()
         qos.pop("id", 0)
         qos.pop("_id", 0)
-        # d = {
-        #     "download": qos["download"],
-        #     "upload": qos["upload"],
-        #     "latency": qos["latency"]
-        # }
         return dumps(qos)
     except:
         raise
