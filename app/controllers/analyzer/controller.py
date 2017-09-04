@@ -8,7 +8,7 @@ import re
 import subprocess
 import sys
 
-netspeed = Blueprint('netspeed', __name__)
+analyzer = Blueprint('netspeed', __name__)
 
 def connected_to_internet():
     conn = http.client.HTTPConnection("www.google.com", timeout=5)
@@ -20,31 +20,44 @@ def connected_to_internet():
         conn.close()
         return False
 
-def latency_test():
+def latency_google_test():
     n = "20"
     host = "8.8.8.8"
     ps = subprocess.Popen(('ping', '-i', '0.2','-c', n, host), stdout=subprocess.PIPE)
     output = subprocess.check_output(("awk", "-F", "/", "END {print $5}"), stdin=ps.stdout)[:-1]
     ps.stdout.close()
-    return output.decode("utf-8") 
+    return output.decode("utf-8")
 
-def bandwidth_test():
+def speedtest():
     st = pyspeedtest.SpeedTest()
-    l = [None] * 2
+    l = [None] * 3
     l[0] = st.download()
     l[1] = st.upload()
+    l[2] = st.ping()
     return l
 
-@netspeed.route("/run_test", methods=['GET'])
+@analyzer.route("/run_test", methods=['GET'])
 def run_test():
     # TODO: keep just 4 decimals
     t = datetime.datetime.now()
     t = t.strftime("%Y-%m-%d %H:%M")
     b = connected_to_internet()
     if (b):
-        nums = bandwidth_test()
-        latency = latency_test()
-        results = {"time": t, "download": nums[0], "upload": nums[1], "latency": latency}
+        nums = speedtest()
+        latency_google = latency_google_test()
+        results = {
+                    "time": t,
+                    "download": nums[0],
+                    "upload": nums[1],
+                    "latency_google": latency_google,
+                    "latency_speednet": nums[2]
+                }
     else:
-        results = {"time": t, "download": -1, "upload": -1, "latency": -1}
+        results = {
+                    "time": t,
+                    "download": -1,
+                    "upload": -1,
+                    "latency_google": -1,
+                    "latency_speednet": -1
+                }
     return dumps(results)
