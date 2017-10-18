@@ -1,5 +1,5 @@
-from controllers.manager import controller as manager
-from controllers.analyzer import controller as analyzer
+from app.controllers.manager import controller as manager
+from app.controllers.analyzer import controller as analyzer
 
 def run_test():
     results = analyzer.run_test()

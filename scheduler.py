@@ -6,7 +6,7 @@ import time
 import schedule
 
 def job():
-    print "Running test:", time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
+    print("Running test:", time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()))
     test.run_test()
 
 schedule.every(15).minutes.do(job)
