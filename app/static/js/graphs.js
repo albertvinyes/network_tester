@@ -20,12 +20,12 @@ $(document).ready(function() {
   google.charts.setOnLoadCallback(drawChart);
 
   function drawChart() {
-    var data_bandwidth = new google.visualization.data_bandwidthTable();
+    var data_bandwidth = new google.visualization.DataTable();
     data_bandwidth.addColumn('date','Date');
     data_bandwidth.addColumn('number', 'Download');
     data_bandwidth.addColumn('number', 'Upload');
 
-    var data_latency = new google.visualization.data_bandwidthTable();
+    var data_latency = new google.visualization.DataTable();
     data_latency.addColumn('date','Date');
     data_latency.addColumn('number', 'Google DSN ping');
     data_latency.addColumn('number', 'SpeedNet ping');
@@ -34,23 +34,26 @@ $(document).ready(function() {
         if (key === 'length' || !results.hasOwnProperty(key)) continue;
         var value = results[key];
         single_result = [new Date(value.time), value.download, value.upload]
-        console.log(single_result);
         data_bandwidth.addRows([single_result])
-        // for (key in value) {
-        //   console.log(key);
-        //   console.log(value[key]);
-        // }
+        single_result = [new Date(value.time), parseInt(value.latency_google), parseInt(value.latency_speednet)]
+        data_latency.addRows([single_result])
     }
 
-    var options = {
+    var options1 = {
       title: 'Bandwidth',
       curveType: 'function',
       legend: { position: 'bottom' }
     };
+    var options2 = {
+      title: 'Latency',
+      curveType: 'function',
+      legend: { position: 'bottom' }
+    };
 
-    var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-
-    chart.draw(data_bandwidth, options);
+    var chart1 = new google.visualization.LineChart(document.getElementById('bandwidth_chart'));
+    var chart2 = new google.visualization.LineChart(document.getElementById('latency_chart'));
+    chart1.draw(data_bandwidth, options1);
+    chart2.draw(data_latency, options2);
   }
 
 
