@@ -1,7 +1,9 @@
 var results;
+var qos;
 
 
 $(document).ready(function() {
+
   console.log("ready")
   function get_data_bandwidth() {
     url = "http://localhost:"+port+"/get_all_results";
@@ -14,6 +16,17 @@ $(document).ready(function() {
       });
   }
 
+  function get_qos() {
+    url = "http://localhost:"+port+"/get_desired_qos";
+    request = $.get(url, function(data_qos) {
+      qos = JSON.parse(data_qos)
+      console.log(qos);
+    })
+    .fail(function() {
+      alert( "error" );
+    });
+  }
+
   get_data_bandwidth();
 
   google.charts.load('current', {'packages':['corechart']});
@@ -21,21 +34,23 @@ $(document).ready(function() {
 
   function drawChart() {
     var data_bandwidth = new google.visualization.DataTable();
-    data_bandwidth.addColumn('date','Date');
+    data_bandwidth.addColumn('datetime','Date');
     data_bandwidth.addColumn('number', 'Download');
     data_bandwidth.addColumn('number', 'Upload');
 
     var data_latency = new google.visualization.DataTable();
-    data_latency.addColumn('date','Date');
+    data_latency.addColumn('datetime','Date');
     data_latency.addColumn('number', 'Google DSN ping');
     data_latency.addColumn('number', 'SpeedNet ping');
 
     for (var key in results) {
         if (key === 'length' || !results.hasOwnProperty(key)) continue;
         var value = results[key];
-        single_result = [new Date(value.time), value.download, value.upload]
+        var single_result = [new Date(value.time), value.download, value.upload];
+        console.log(value.time);
         data_bandwidth.addRows([single_result])
-        single_result = [new Date(value.time), parseInt(value.latency_google), parseInt(value.latency_speednet)]
+        single_result = [new Date(value.time), parseInt(value.latency_google), parseInt(value.latency_speednet)];
+        console.log(value.time);
         data_latency.addRows([single_result])
     }
 
@@ -44,11 +59,14 @@ $(document).ready(function() {
       curveType: 'function',
       legend: { position: 'bottom' }
     };
+
     var options2 = {
       title: 'Latency',
       curveType: 'function',
       legend: { position: 'bottom' }
     };
+
+    get_qos();
 
     var chart1 = new google.visualization.LineChart(document.getElementById('bandwidth_chart'));
     var chart2 = new google.visualization.LineChart(document.getElementById('latency_chart'));

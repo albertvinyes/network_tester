@@ -3,7 +3,7 @@ By using this software, you can analyse network performance indicators such as d
 
 ### Contributors
 - Albert Viñés: albert.vines@gmail.com
-- 
+-
 
 #### Requirements
 You will need python and pip to be installed in your system. We suggest the usage of python virtual environments to isolate  application dependencies and to avoid changing the system's python packages. You can install virtualenv with the following command:
@@ -22,7 +22,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 #### Running the software
-An hourly test can be run separate to the UI webserver. The test automatically stores the results in a Database which feeds the UI. To execute the hourly test run:
+An hourly test can be run separately to the UI webserver. The test automatically stores the results in a Database which feeds the UI. To execute the hourly test run:
 
 ```shell
 source venv/bin/activate
