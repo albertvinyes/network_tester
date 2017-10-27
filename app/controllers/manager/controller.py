@@ -60,6 +60,7 @@ def erase_results():
     try:
         db = client.database
         db.network_results_collection.remove()
+        db.stats_collection.remove()
         return("Results removed", 200)
     except:
         return("Error removing results", 400)
