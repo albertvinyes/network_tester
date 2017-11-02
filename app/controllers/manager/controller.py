@@ -38,9 +38,7 @@ def set_desired_qos():
 def get_desired_qos():
     try:
         db = client.database
-        qos = db.qos_collection.find_one()
-        qos.pop("id", 0)
-        qos.pop("_id", 0)
+        qos = db.qos_collection.find_one({},{"_id":0})
         return dumps(qos)
     except:
         raise
@@ -50,7 +48,7 @@ def get_desired_qos():
 def get_results():
     try:
         db = client.database
-        network_results = db.network_results_collection.find()
+        network_results = db.network_results_collection.find({},{"_id":0})
         return dumps(network_results)
     except:
         return("Error getting results", 500)
