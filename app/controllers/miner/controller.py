@@ -35,6 +35,7 @@ def update_stats(results):
         n = db.stats_collection.count()
         values = [None] * 10
         results = loads(results)
+        print(n)
         if (n == 0):
             values[0], values[1], values[2] = (results["download"], )*3
             values[3], values[4], values[5] = (results["upload"], )*3
@@ -45,31 +46,28 @@ def update_stats(results):
             print(d)
         else:
             values[0] = max(float(results["download"]), float(stats["max_download"]))
-            if (float(results["download"]) > 0):
-                values[1] = min(float(results["download"]), float(stats["min_download"]))
+            values[1] = min(float(results["download"]), float(stats["min_download"]))
             values[2] = cumulative_average(n, float(stats["avg_download"]), float(results["download"]))
             values[3] = max(float(results["upload"]), float(stats["max_upload"]))
-            if (float(results["upload"]) > 0):
-                values[4] = min(float(results["upload"]), float(stats["min_upload"]))
+            values[4] = min(float(results["upload"]), float(stats["min_upload"]))
             values[5] = cumulative_average(n, float(stats["avg_upload"]), float(results["upload"]))
             values[6] = max(float(results["latency_google"]), float(stats["max_latency"]))
-            if (float(results["latency_google"]) > 0):
-                values[7] = min(float(results["latency_google"]), float(stats["min_latency"]))
+            values[7] = min(float(results["latency_google"]), float(stats["min_latency"]))
             values[8] = cumulative_average(n, float(stats["avg_latency"]), float(results["latency_google"]))
             values[9] = float(stats["count"])+1.0
             d = format_stats(values)
             print(d)
             stats_db.update_one({"id": "stats"}, {"$set": d})
-        return("Success")
+        return "Success"
     except:
         raise
-        return("Error updating stats")
+        return("Error updating stats", 500)
 
 @miner.route("/get_stats", methods=['GET'])
 def get_stats():
     try:
         db = client.database
-        stats = db.stats_collection.find_one({},{"_id":0})
+        stats = db.stats_collection.find_one({},{"id":0, "_id":0})
         return dumps(stats)
     except:
         raise
