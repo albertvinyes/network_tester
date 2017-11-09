@@ -1,9 +1,11 @@
 
 $(document).ready(function() {
   var result;
+  var arr = window.location.href.split("/");
+  var domain = arr[0] + "//" + arr[2]
 
   function run_test() {
-    url = "http://localhost:"+port+"/run_test";
+    url = domain+"/run_test";
     request = $.get(url, function(data_bandwidth) {
         result = JSON.parse(data_bandwidth)
         $("#download").html((result["download"]/1000000).toFixed(2) + " Mbps");

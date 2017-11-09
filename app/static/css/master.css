@@ -8,6 +8,20 @@ body {
     margin: 0;
     padding: 0;
 }
+.main-chart {
+  width: 100%;
+  height: 500px;
+  padding: 5px;"
+}
+#avg-chart-container {
+  display: flex;
+  justify-content: space-between;
+}
+.avg-chart{
+  width: 28%;
+  height: 300x;
+  padding: 5px;
+}
 .navbar {
   background: #FFF !important;
 }
