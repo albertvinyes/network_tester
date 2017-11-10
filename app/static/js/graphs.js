@@ -6,9 +6,10 @@ var URL;
 $(document).ready(function() {
   console.log("document ready");
   var arr = window.location.href.split("/");
-  var domain = arr[0] + "//" + arr[2]
+  var domain = arr[0] + "//" + arr[2];
 
   function get_data_bandwidth() {
+    console.log("getting data");
     url = domain+"/get_all_results";
     request = $.get(url, function(data_bandwidth) {
         results = JSON.parse(data_bandwidth)
@@ -20,6 +21,7 @@ $(document).ready(function() {
   }
 
   function get_stats() {
+    console.log("getting data");
     url = domain+"/get_stats";
     request = $.get(url, function(data_stats) {
       stats = JSON.parse(data_stats)
@@ -31,6 +33,7 @@ $(document).ready(function() {
   }
 
   function get_qos() {
+    console.log("getting data");
     url = domain+"/get_desired_qos";
     request = $.get(url, function(data_qos) {
       qos = JSON.parse(data_qos)
@@ -40,7 +43,7 @@ $(document).ready(function() {
     });
   }
 
-  google.charts.load('current', {'packages':['corechart','line','annotationchart','bar']});
+
 
   function draw_averages_charts() {
     var a = parseInt(stats["max_download"]);
@@ -138,7 +141,6 @@ $(document).ready(function() {
         data_latency.addRows([single_result])
     }
 
-
     var options1 = {
       title: 'Bandwidth',
       curveType: 'function',
@@ -158,21 +160,24 @@ $(document).ready(function() {
       colors: ['#17a2b8','#F19F4D'],
       legend: { position: 'bottom' }
     };
-
+    
     var options2 = {
       title: 'Latency',
       curveType: 'function',
       legend: { position: 'bottom' }
     };
-
     var chart1 = new google.visualization.AnnotationChart(document.getElementById('bandwidth_chart'));
     var chart2 = new google.visualization.AnnotationChart(document.getElementById('latency_chart'));
     chart1.draw(data_bandwidth, options1);
     chart2.draw(data_latency, options1);
-
   }
 
-  get_data_bandwidth();
-  get_stats();
-  get_qos();
+  google.charts.load('current', {'packages':['corechart','line','annotationchart','bar']});
+  google.charts.setOnLoadCallback(get_all_data);
+
+  function get_all_data() {
+    get_data_bandwidth();
+    get_stats();
+    get_qos();
+  }
 });
