@@ -11,7 +11,7 @@ $(document).ready(function() {
   function get_data_bandwidth() {
     url = domain+"/get_all_results";
     request = $.get(url, function(data_bandwidth) {
-        results = JSON.parse(data_bandwidth)
+        results = JSON.parse(data_bandwidth);
         draw_timelines();
       })
       .fail(function() {
@@ -22,8 +22,8 @@ $(document).ready(function() {
   function get_stats() {
     url = domain+"/get_stats";
     request = $.get(url, function(data_stats) {
-      stats = JSON.parse(data_stats)
-      draw_averages_charts()
+      stats = JSON.parse(data_stats);
+      draw_averages_charts();
     })
     .fail(function() {
       alert( "error" );
@@ -40,17 +40,16 @@ $(document).ready(function() {
     });
   }
 
-  google.charts.load('current', {'packages':['corechart','line','annotationchart','bar']});
 
   function draw_averages_charts() {
     var a = parseInt(stats["max_download"]);
     var b = parseInt(stats["avg_download"]);
     var c = parseInt(stats["min_download"]);
     var down_data = google.visualization.arrayToDataTable([
-       ['Download', 'bps', { role: 'style' } ],
-       ['Max', a, 'stroke-color: #17a2b8, stroke-opacity: 0.6; stroke-width: 8; fill-color: #BC5679; fill-opacity: 0.2'],
-       ['Avg', b, '#F19F4D'],
-       ['Min', c, '#7570b3']
+       ['Download', 'bps'],
+       ['Max', a],
+       ['Avg', b],
+       ['Min', c]
     ]);
 
     var down_options = {
@@ -68,10 +67,10 @@ $(document).ready(function() {
     b = parseInt(stats["avg_upload"]);
     c = parseInt(stats["min_upload"]);
     var up_data = google.visualization.arrayToDataTable([
-       ['Upload', 'bps', { role: 'style' } ],
-       ['Max', a, '#F19F4D'],
-       ['Avg', b, '#F19F4D'],
-       ['Min', c, '#7570b3']
+       ['Upload', 'bps'],
+       ['Max', a],
+       ['Avg', b],
+       ['Min', c]
     ]);
 
     var up_options = {
@@ -88,10 +87,10 @@ $(document).ready(function() {
     b = parseInt(stats["avg_latency"]);
     c = parseInt(stats["min_latency"]);
     var lt_data = google.visualization.arrayToDataTable([
-       ['Latency to Google', 'ms', { role: 'style' } ],
-       ['Max', a, '#7570b3'],
-       ['Avg', b, '#F19F4D'],
-       ['Min', c, '#7570b3']
+       ['Latency to Google', 'ms'],
+       ['Max', a],
+       ['Avg', b],
+       ['Min', c]
     ]);
 
     var lt_options = {
@@ -171,8 +170,11 @@ $(document).ready(function() {
     chart2.draw(data_latency, options1);
 
   }
-
-  get_data_bandwidth();
-  get_stats();
-  get_qos();
+  function get_all_data() {
+    get_data_bandwidth();
+    get_stats();
+    get_qos();
+  }
+  google.charts.load('current', {'packages':['corechart','line','annotationchart','bar']});
+  google.charts.setOnLoadCallback(get_all_data)
 });

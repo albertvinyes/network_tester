@@ -25,6 +25,9 @@ body {
 .navbar {
   background: #FFF !important;
 }
+.progress-bar {
+  background-color: #17a2b8;
+}
 .jumbotron {
   background: #F9F9F9 !important;
 }
