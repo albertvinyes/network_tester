@@ -57,7 +57,6 @@ $(document).ready(function() {
       },
       bars: 'vertical',
       vAxis: {direction: -1},
-      height: 400,
       legend: {position: 'none'},
       colors: ["#17a2b8"]
     };
@@ -77,7 +76,6 @@ $(document).ready(function() {
         title: 'Upload',
       },
       vAxis: {format: 'decimal'},
-      height: 400,
       legend: {position: 'none'},
       colors: ["#F19F4D"]
     };
@@ -100,7 +98,6 @@ $(document).ready(function() {
       vAxis: {format: 'decimal'},
       vAxis: {direction: -1},
       hAxis: {direction: -1},
-      height: 400,
       legend: {position: 'none'},
       colors: ["#7570b3"]
     };
