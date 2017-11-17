@@ -42,17 +42,21 @@
       </div>
 
       <div class="row justify-content-center">
-        <div class="jumbotron col-lg-10">
-          <h3>Statistics</h3>
-          <div id="avg-chart-container">
-            <div id="stats_download_chart" class="avg-chart"></div>
-            <div id="stats_upload_chart" class="avg-chart"></div>
-            <div id="stats_latency_chart" class="avg-chart"></div>
+        <div class="jumbotron col-lg-10 col-xs-12 col-sm-12 col-md-12">
+          <!-- <h3>Statistics</h3> -->
+          <div id="avg-chart-container" class="row">
+            <div id="stats_download_chart" class="avg-chart col-md-3 col-sm-12 col-xs-12 col-lg-4"></div>
+            <div id="stats_upload_chart" class="avg-chart col-md-3 col-sm-12 col-xs-12 col-lg-4"></div>
+            <div id="stats_latency_chart" class="avg-chart col-md-3 col-sm-12 col-xs-12 col-lg-4"></div>
           </div>
-          <h3>Bandwidth</h3>
-          <div id="bandwidth_chart" class="main-chart"></div>
-          <h3>Latency</h3>
-          <div id="latency_chart" class="main-chart"></div>
+          <!-- <h3>Bandwidth</h3> -->
+          <div class="row">
+            <div id="bandwidth_chart" class="main-chart"></div>
+          </div>
+          <!-- <h3>Latency</h3> -->
+          <div class="row">
+            <div id="latency_chart" class="main-chart"></div>
+          </div>
         </div>
         <div class="modal fade" id="runTest" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg" role="document">
