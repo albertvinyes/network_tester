@@ -43,7 +43,6 @@ def update_stats(results):
             values[9] = 1
             d = format_stats(values)
             stats_db.insert_one(d)
-            print(d)
         else:
             values[0] = max(float(results["download"]), float(stats["max_download"]))
             values[1] = min(float(results["download"]), float(stats["min_download"]))
@@ -56,7 +55,6 @@ def update_stats(results):
             values[8] = cumulative_average(n, float(stats["avg_latency"]), float(results["latency_google"]))
             values[9] = float(stats["count"])+1.0
             d = format_stats(values)
-            print(d)
             stats_db.update_one({"id": "stats"}, {"$set": d})
         return "Success"
     except:
