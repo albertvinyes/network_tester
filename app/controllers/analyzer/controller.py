@@ -1,6 +1,6 @@
 from flask import Blueprint
 from bson.json_util import dumps
-import pyspeedtest
+import speedtest
 import datetime
 import http.client
 import pprint
@@ -28,12 +28,16 @@ def latency_google_test():
     ps.stdout.close()
     return output.decode("utf-8")
 
-def speedtest():
-    st = pyspeedtest.SpeedTest()
+def speed_test():
+    s = speedtest.Speedtest()
+    s.get_best_server()
+    s.download()
+    s.upload()
+    st = s.results.dict()
     l = [None] * 3
-    l[0] = st.download()
-    l[1] = st.upload()
-    l[2] = st.ping()
+    l[0] = st['download']
+    l[1] = st['upload']
+    l[2] = st['ping']
     return l
 
 @analyzer.route("/run_test", methods=['GET'])
@@ -43,7 +47,7 @@ def run_test():
     t = t.strftime("%Y-%m-%d %H:%M")
     b = connected_to_internet()
     if (b):
-        nums = speedtest()
+        nums = speed_test()
         latency_google = latency_google_test()
         results = {
                     "time": t,
