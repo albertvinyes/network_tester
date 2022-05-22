@@ -32,7 +32,7 @@ def update_stats(results):
         db = client.database
         stats_db = db.stats_collection
         stats = db.stats_collection.find_one()
-        n = db.stats_collection.count()
+        n = db.stats_collection.count_documents({})
         values = [None] * 10
         results = loads(results)
         print(n)

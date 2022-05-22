@@ -17,7 +17,7 @@ def job():
     print("Running test:", time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()))
     test.run_test()
 
-schedule.every(15).minutes.do(job)
+schedule.every(1).minutes.do(job)
 #schedule.every().hour.at(':00').do(job)
 
 while True:
