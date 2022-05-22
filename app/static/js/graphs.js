@@ -127,9 +127,9 @@ $(document).ready(function() {
     for (var key in results) {
         if (key === 'length' || !results.hasOwnProperty(key)) continue;
         var value = results[key];
-        var single_result = [new Date(value.time), value.download, value.upload];
+        var single_result = [new Date(value.time.replace(" ", "T")), value.download, value.upload];
         data_bandwidth.addRows([single_result])
-        single_result = [new Date(value.time), parseInt(value.latency_google), parseInt(value.latency_speednet)];
+        single_result = [new Date(value.time.replace(" ", "T")), parseInt(value.latency_google), parseInt(value.latency_speednet)];
         data_latency.addRows([single_result])
     }
 
@@ -150,6 +150,7 @@ $(document).ready(function() {
         maxZoomIn: 4.0
       },
       colors: ['#17a2b8','#F19F4D'],
+      thickness: 4,
       legend: { position: 'bottom' }
     };
 
