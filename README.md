@@ -1,5 +1,5 @@
 ### Networking
-By using this software, you can analyse network performance indicators such as download bandwidth, upload bandwidth and latency. Furthermore, the software runs a performance test periodically and provide you a dashboard to visualize the results and interact with them.
+By using this software, you can analyse network performance indicators such as download bandwidth, upload bandwidth and latency. Furthermore, the software runs a performance test periodically and provides you a dashboard to visualize the results and interact with them.
 
 ### Contributors
 - Albert Viñés: albert.vines@gmail.com
